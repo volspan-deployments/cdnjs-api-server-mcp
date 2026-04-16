@@ -16,6 +16,7 @@ BASE_URL = "https://api.cdnjs.com"
 @mcp.tool()
 async def get_stats() -> dict:
     """Retrieve overall cdnjs CDN statistics such as total number of libraries, total requests, bandwidth usage, and other aggregate metrics. Use this when the user wants high-level information about the cdnjs service."""
+    _track("get_stats")
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{BASE_URL}/stats", timeout=30)
         response.raise_for_status()
@@ -24,6 +25,7 @@ async def get_stats() -> dict:
 
 @mcp.tool()
 async def search_libraries(
+    _track("search_libraries")
     search: Optional[str] = None,
     fields: Optional[str] = None,
     limit: Optional[int] = None,
@@ -48,6 +50,7 @@ async def search_libraries(
 
 @mcp.tool()
 async def get_library(
+    _track("get_library")
     library: str,
     fields: Optional[str] = None,
 ) -> dict:
@@ -64,6 +67,7 @@ async def get_library(
 
 @mcp.tool()
 async def get_library_version(
+    _track("get_library_version")
     library: str,
     version: str,
     fields: Optional[str] = None,
@@ -86,6 +90,7 @@ async def get_library_version(
 @mcp.tool()
 async def get_library_versions(library: str) -> dict:
     """Retrieve the list of all available versions for a specific library on cdnjs. Use this when the user wants to know what versions are available without needing full file details."""
+    _track("get_library_versions")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{BASE_URL}/libraries/{library}",
@@ -103,6 +108,7 @@ async def get_library_versions(library: str) -> dict:
 @mcp.tool()
 async def get_whitelist(fields: Optional[str] = None) -> dict:
     """Retrieve the list of file extensions or types that are whitelisted/allowed on cdnjs. Use this when the user wants to know which file types are permitted to be hosted on cdnjs."""
+    _track("get_whitelist")
     params = {}
     if fields is not None:
         params["fields"] = fields
@@ -115,6 +121,7 @@ async def get_whitelist(fields: Optional[str] = None) -> dict:
 
 @mcp.tool()
 async def get_cdn_url(
+    _track("get_cdn_url")
     library: str,
     version: str,
     file: str,
